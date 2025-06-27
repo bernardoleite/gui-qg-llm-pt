@@ -164,6 +164,14 @@
             </div>
           </div>
 
+        <!-- Password Field (Required) -->
+        <div class="mb-3 mt-3">
+          <label for="password_input" class="form-label text-danger">🔒 Password (API) <span class="text-danger">*</span></label>
+          <input type="password" id="password_input" class="form-control border-danger text-danger" placeholder="Insira a palavra-passe" required>
+          <div class="invalid-feedback">
+            A password é obrigatória.
+          </div>
+        </div>
 
         <div class="mt-4">
           <button id="generateBtn" type="submit" class="btn btn-primary">Gerar Perguntas</button>
@@ -188,7 +196,8 @@
       generateBtn.disabled = true;
       generateBtn.textContent = 'A carregar...';
 
-      const password = localStorage.getItem('api_access_password'); // just for local testing
+      //const password = localStorage.getItem('api_access_password'); // just for local testing
+      const password = document.getElementById('password_input').value;
 
       const narrative_aspects = Array.from(document.querySelectorAll('.aspect-option:checked')).map(cb => cb.value);
 
