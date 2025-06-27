@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Perguntas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { padding: 2rem; }
+    textarea { resize: vertical; }
+    pre {
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+    }
+    .advanced-settings {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: #f0f8ff;
+    }
+    .dropdown-menu {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mb-4">Gerador de Perguntas 🇵🇹 - Compreensão da Leitura</h2>
+    <div class="row">
+      <!-- Form -->
+      <div class="col-md-5">
+        <form id="questionForm">
+
+          <div class="mb-3">
+            <label class="form-label">Texto Narrativo</label>
+            <textarea id="narrative_text" class="form-control" rows="6" placeholder="Insira o texto narrativo aqui..." required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Tipo de Perguntas</label>
+            <select id="question_type" class="form-select" required>
+              <option value="multiple-choice">Escolha Múltipla</option>
+              <option value="open-ended">Resposta Aberta</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Número de Perguntas</label>
+            <input type="number" id="quantity" class="form-control" placeholder="Ex: 5" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nível de Ensino</label>
+            <select id="education_level" class="form-select" required>
+              <option value="" disabled selected>Selecione o nível de ensino</option>
+              <option value="1º ciclo - 1º Ano">1º ciclo - 1º Ano</option>
+              <option value="1º ciclo - 2º Ano">1º ciclo - 2º Ano</option>
+              <option value="1º ciclo - 3º Ano">1º ciclo - 3º Ano</option>
+              <option value="1º ciclo - 4º Ano">1º ciclo - 4º Ano</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Dificuldade</label>
+            <select id="difficulty" class="form-select">
+              <option value="random">Aleatória</option>
+              <option value="easy">Fácil</option>
+              <option value="medium">Média</option>
+              <option value="hard">Difícil</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Incluir Aspetos Narrativos</label>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Selecionar aspetos narrativos...
+              </button>
+              <ul class="dropdown-menu w-100 px-3">
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="character" id="aspect1">
+                    <label class="form-check-label" for="aspect1">
+                      Personagens <small class="text-muted">(Ex: "Quem…?")</small>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="feeling" id="aspect2">
+                    <label class="form-check-label" for="aspect2">
+                      Sentimentos <small class="text-muted">(Ex: "Como se sentiu…?")</small>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="space" id="aspect3">
+                    <label class="form-check-label" for="aspect3">
+                      Espaço <small class="text-muted">(Ex: "Onde…?")</small>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="time" id="aspect3">
+                    <label class="form-check-label" for="aspect4">
+                      Tempo <small class="text-muted">(Ex: "Quando…?")</small>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="action" id="aspect4">
+                    <label class="form-check-label" for="aspect5">
+                      Ação <small class="text-muted">(Ex: "O que…?", "Como…?")</small>
+                    </label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input aspect-option" type="checkbox" value="causal" id="aspect5">
+                    <label class="form-check-label" for="aspect6">
+                      Causalidade <small class="text-muted">(Ex: "Por que razão…?", "Qual o motivo…?")</small>
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Advanced Settings Toggle -->
+          <div class="mb-3">
+            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#advancedSettings" aria-expanded="false" aria-controls="advancedSettings">
+              ⚙️ Configurações Avançadas
+            </button>
+          </div>
+
+          <!-- Advanced Settings Section -->
+          <div class="collapse" id="advancedSettings">
+            <div class="card card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <label class="form-label">Modelo</label>
+                  <select id="model_name" class="form-select">
+                    <option value="gpt-4">gpt-4</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Temperature</label>
+                  <input type="number" step="0.1" min="0" max="2" id="temperature" class="form-control" value="0.7">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Max Tokens</label>
+                  <input type="number" id="max_tokens" class="form-control" value="512">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Top-p</label>
+                  <input type="number" step="0.1" min="0" max="1" id="top_p" class="form-control" value="1.0">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        <div class="mt-4">
+          <button id="generateBtn" type="submit" class="btn btn-primary">Gerar Perguntas</button>
+        </div>
+        </form>
+      </div>
+
+      <!-- Output -->
+      <div class="col-md-7">
+        <h5>Resultado:</h5>
+        <pre id="output">...</pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('questionForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const generateBtn = document.getElementById('generateBtn');
+      generateBtn.disabled = true;
+      generateBtn.textContent = 'A carregar...';
+
+      const password = localStorage.getItem('api_access_password'); // just for local testing
+
+      const narrative_aspects = Array.from(document.querySelectorAll('.aspect-option:checked')).map(cb => cb.value);
+
+      const payload = {
+        education_level: document.getElementById('education_level').value,
+        quantity: parseInt(document.getElementById('quantity').value),
+        difficulty: document.getElementById('difficulty').value,
+        narrative_text: document.getElementById('narrative_text').value,
+        password: password,
+        question_type: document.getElementById('question_type').value,
+        model_name: document.getElementById('model_name').value,
+        temperature: parseFloat(document.getElementById('temperature').value),
+        max_tokens: parseInt(document.getElementById('max_tokens').value),
+        top_p: parseFloat(document.getElementById('top_p').value),
+        narrative_aspects: narrative_aspects
+      };
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/generate-questions', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        document.getElementById('output').textContent = 'Erro ao processar resposta.';
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Gerar Perguntas';
+      }
+    });
+  </script>
+</body>
+</html>
