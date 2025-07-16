@@ -9,7 +9,7 @@ This project is a frontend graphical user interface (GUI) designed to facilitate
 The interface is available at:  
 👉 [https://benjleite.com/gui-qg-llm-pt/form.html](https://benjleite.com/gui-qg-llm-pt/form.html)
 
-<img src="gui_form.png" alt="Screenshot of the interface" width="600"/>
+![Screenshot of the interface](gui_form.png)
 
 ## ⚠️ Disclaimer:
 
