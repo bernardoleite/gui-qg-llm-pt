@@ -4,7 +4,16 @@
 
 This project is a frontend graphical user interface (GUI) designed to facilitate generating Portuguese reading comprehension questions. It operates as a lightweight client for a custom backend API that leverages large language models (LLMs) to generate questions based on provided narrative text and selected parameters.
 
-> ⚠️ **Disclaimer:** This is only a GUI. It does not perform any question generation by itself - it communicates with a custom backend API of your choice.  
+## 🌐 Online GUI (GitHub Pages)
+
+The interface is available at:  
+👉 [https://benjleite.com/gui-qg-llm-pt/form.html](https://benjleite.com/gui-qg-llm-pt/form.html)
+
+<img src="gui_form.png" alt="Screenshot of the interface" width="600"/>
+
+## ⚠️ Disclaimer:
+
+This is only a GUI. It does not perform any question generation by itself - it communicates with a custom backend API of your choice.  
 >  
 > The API endpoint can be changed directly in the source code (inside the HTML file) at this section:
 > ```javascript
@@ -17,8 +26,6 @@ This project is a frontend graphical user interface (GUI) designed to facilitate
 >   body: JSON.stringify(payload)
 >   });
 > ```
-
----
 
 ## Features
 
@@ -33,8 +40,6 @@ This project is a frontend graphical user interface (GUI) designed to facilitate
   - Temperature, Max Tokens, and Top-p for controlling output randomness and length.
 - Password protected API access.
 - Outputs generated questions in both JSON format and a human-friendly preview.
-
----
 
 ## Usage
 
@@ -61,8 +66,6 @@ This project is a frontend graphical user interface (GUI) designed to facilitate
 9. Click **Gerar Perguntas** to send the request to the backend API.
 10. View results either as raw JSON or a formatted preview.
 
----
-
 ## API Parameters
 
 The frontend sends the following parameters to the backend API `/generate-questions` endpoint as a JSON payload:
@@ -74,31 +77,34 @@ The frontend sends the following parameters to the backend API `/generate-questi
 | `num_questions`     | integer       | Number of questions to generate (1 to 6).                                  |
 | `education_level`   | string        | Educational level: `"1st-grade"`, `"2nd-grade"`, `"3rd-grade"`, `"4th-grade"`. |
 | `difficulty`        | string        | Difficulty level: `"random"`, `"easy"`, `"medium"`, `"hard"`.              |
-| `narrative_aspects` | array[string] | Selected narrative aspects (e.g., `"character"`, `"feeling"`, etc.).       |
+| `narrative_aspects` | array[string] | Selected narrative aspects (e.g., `"character"`, `"feeling"`, `"space"`, `"time"`, `"action"` or `"causal"`).       |
 | `model_name`        | string        | LLM model to use (e.g., `"GPT-4o"`).                                       |
 | `temperature`       | float         | Controls randomness of output (range: 0–2).                                |
 | `max_tokens`        | integer       | Maximum tokens allowed in the generated output.                            |
 | `top_p`             | float         | Nucleus sampling parameter (range: 0–1).                                   |
 | `password`          | string        | API password for authentication.                                           |
 
----
-
-## Example Output
+## Example Input/Output
 
 When sending a request with the following payload:
 
 ```json
 {
-  "contexto": "Era uma vez uma lebre muito vaidosa que gostava de se gabar da sua velocidade. Um dia, uma tartaruga, cansada de ouvir as suas provocações, desafiou-a para uma corrida...",
-  "nivel": "1º ciclo - 2º Ano",
-  "dificuldade": "Fácil",
-  "idade": "7-8",
-  "numero": 3,
-  "tipo": "escolha múltipla"
+  "narrative_text": "Era uma vez uma tartaruga e a lebre...",
+  "question_type": "multiple-choice",
+  "num_questions": 3,
+  "education_level": "2nd-grade",
+  "difficulty": "easy",
+  "narrative_aspects": ["character", "feeling"],
+  "model_name": "GPT-4o",
+  "temperature": 1.0,
+  "max_tokens": 2048,
+  "top_p": 1.0,
+  "password": "your_api_password_here"
 }
 ```
 
-You will receive a response similar to the following (this output structure is what the interface expects from the backend API):
+You will receive a response similar to the following (this output structure is what the GUI expects from the backend API):
 
 ```json
 {
@@ -142,25 +148,25 @@ You will receive a response similar to the following (this output structure is w
         {
           "correta": "Verdade.",
           "opcao": "A",
-          "texto": "A tartaruga sentia-se cansada de ser alvo de gozações."
+          "texto": "A tartaruga sentia-se..."
         },
         {
           "correta": "Falso.",
           "opcao": "B",
-          "texto": "A tartaruga sentia-se feliz com as gozações."
+          "texto": "A tartaruga sentia-se...."
         },
         {
           "correta": "Falso.",
           "opcao": "C",
-          "texto": "A tartaruga sentia-se surpresa com as gozações."
+          "texto": "A tartaruga sentia-se..."
         },
         {
           "correta": "Falso.",
           "opcao": "D",
-          "texto": "A tartaruga sentia-se indiferente às gozações."
+          "texto": "A tartaruga sentia-se..."
         }
       ],
-      "pergunta": "Como se sentia a tartaruga por ser alvo de gozações?",
+      "pergunta": "Como se sentia a tartaruga...?",
       "tipo": "escolha múltipla"
     },
     {
@@ -197,28 +203,21 @@ You will receive a response similar to the following (this output structure is w
 }
 ```
 
----
-
 ## Development Notes
 
 - The frontend is a single HTML file using Bootstrap 5.
 - Form submission handled via vanilla JavaScript (`fetch`).
 - Two output views: raw JSON and formatted preview.
 - To switch between local and deployed API, edit the fetch URL in the `<script>` section of the HTML.
----
 
 ## Future Improvements
 
-- Add support for more LLM models and multilingual output (including json attributes).
+- Add support for more LLM models and multilingual output (including json output attributes).
 - Enhance UI with real-time validation and accessibility improvements.
 - Optional export to PDF or DOCX.
 - Store configuration presets for frequent users.
 
----
-
 ## Contact
 
-Bernardo Leite
-
----
+Bernardo Leite (benjleite.com)
 
