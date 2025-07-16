@@ -79,9 +79,9 @@ The frontend sends the following parameters to the backend API `/generate-questi
 | `difficulty`        | string        | Difficulty level: `"random"`, `"easy"`, `"medium"`, `"hard"`.              |
 | `narrative_aspects` | array[string] | Selected narrative aspects (e.g., `"character"`, `"feeling"`, `"space"`, `"time"`, `"action"` or `"causal"`).       |
 | `model_name`        | string        | LLM model to use (e.g., `"GPT-4o"`).                                       |
-| `temperature`       | float         | Controls randomness of output (range: 0–2).                                |
+| `temperature`       | float         | Controls randomness of output (range: 0-2).                                |
 | `max_tokens`        | integer       | Maximum tokens allowed in the generated output.                            |
-| `top_p`             | float         | Nucleus sampling parameter (range: 0–1).                                   |
+| `top_p`             | float         | Nucleus sampling parameter (range: 0-1).                                   |
 | `password`          | string        | API password for authentication.                                           |
 
 ## Example Input/Output
