@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Gerador de Perguntas</title>
+  <link rel="icon" type="image/svg+xml" href="/robot.svg" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { padding: 2rem; }
@@ -47,18 +48,28 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Número de Perguntas</label>
-            <input type="number" id="quantity" class="form-control" placeholder="Ex: 5" required>
+            <label class="form-label">Nr. de Perguntas (1-6)</label>
+            <input
+              type="number"
+              id="num_questions"
+              class="form-control"
+              placeholder="Ex: 5"
+              value="3"
+              min="1"
+              max="6"
+              step="1"
+              required
+            >
           </div>
 
           <div class="mb-3">
             <label class="form-label">Nível de Ensino</label>
             <select id="education_level" class="form-select" required>
               <option value="" disabled selected>Selecione o nível de ensino</option>
-              <option value="1º ciclo - 1º Ano">1º ciclo - 1º Ano</option>
-              <option value="1º ciclo - 2º Ano">1º ciclo - 2º Ano</option>
-              <option value="1º ciclo - 3º Ano">1º ciclo - 3º Ano</option>
-              <option value="1º ciclo - 4º Ano">1º ciclo - 4º Ano</option>
+              <option value="1st-grade">1º ciclo - 1º Ano</option>
+              <option value="2nd-grade">1º ciclo - 2º Ano</option>
+              <option value="3rd-grade">1º ciclo - 3º Ano</option>
+              <option value="4th-grade">1º ciclo - 4º Ano</option>
             </select>
           </div>
 
@@ -105,7 +116,7 @@
                 </li>
                 <li>
                   <div class="form-check">
-                    <input class="form-check-input aspect-option" type="checkbox" value="time" id="aspect3">
+                    <input class="form-check-input aspect-option" type="checkbox" value="time" id="aspect4">
                     <label class="form-check-label" for="aspect4">
                       Tempo <small class="text-muted">(Ex: "Quando…?")</small>
                     </label>
@@ -113,7 +124,7 @@
                 </li>
                 <li>
                   <div class="form-check">
-                    <input class="form-check-input aspect-option" type="checkbox" value="action" id="aspect4">
+                    <input class="form-check-input aspect-option" type="checkbox" value="action" id="aspect5">
                     <label class="form-check-label" for="aspect5">
                       Ação <small class="text-muted">(Ex: "O que…?", "Como…?")</small>
                     </label>
@@ -121,7 +132,7 @@
                 </li>
                 <li>
                   <div class="form-check">
-                    <input class="form-check-input aspect-option" type="checkbox" value="causal" id="aspect5">
+                    <input class="form-check-input aspect-option" type="checkbox" value="causal" id="aspect6">
                     <label class="form-check-label" for="aspect6">
                       Causalidade <small class="text-muted">(Ex: "Por que razão…?", "Qual o motivo…?")</small>
                     </label>
@@ -145,16 +156,16 @@
                 <div class="col-md-3">
                   <label class="form-label">Modelo</label>
                   <select id="model_name" class="form-select">
-                    <option value="gpt-4">gpt-4</option>
+                    <option value="GPT-4o">GPT-4o</option>
                   </select>
                 </div>
                 <div class="col-md-3">
                   <label class="form-label">Temperature</label>
-                  <input type="number" step="0.1" min="0" max="2" id="temperature" class="form-control" value="0.7">
+                  <input type="number" step="0.1" min="0" max="2" id="temperature" class="form-control" value="1.0">
                 </div>
                 <div class="col-md-3">
                   <label class="form-label">Max Tokens</label>
-                  <input type="number" id="max_tokens" class="form-control" value="512">
+                  <input type="number" id="max_tokens" class="form-control" value="2048">
                 </div>
                 <div class="col-md-3">
                   <label class="form-label">Top-p</label>
@@ -182,7 +193,29 @@
       <!-- Output -->
       <div class="col-md-7">
         <h5>Resultado:</h5>
-        <pre id="output">...</pre>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="json-tab" data-bs-toggle="tab" data-bs-target="#json-view" type="button" role="tab" aria-controls="json-view" aria-selected="true">JSON</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview-view" type="button" role="tab" aria-controls="preview-view" aria-selected="false">Preview</button>
+          </li>
+        </ul>
+
+        <!-- Tab content -->
+        <div class="tab-content mt-2" id="resultTabsContent">
+          <!-- JSON raw -->
+          <div class="tab-pane fade show active" id="json-view" role="tabpanel" aria-labelledby="json-tab">
+            <pre id="output">...</pre>
+          </div>
+
+          <!-- Human-friendly preview -->
+          <div class="tab-pane fade" id="preview-view" role="tabpanel" aria-labelledby="preview-tab">
+            <div id="preview-output"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -196,16 +229,27 @@
       generateBtn.disabled = true;
       generateBtn.textContent = 'A carregar...';
 
+      // Nr. Questions from 1 to 6
+      const numQuestionsInput = document.getElementById('num_questions');
+      const numQuestions = parseInt(numQuestionsInput.value, 10);
+      if (isNaN(numQuestions) || numQuestions < 1 || numQuestions > 6) {
+        alert("Por favor, insira um número de perguntas entre 1 e 6.");
+        generateBtn.disabled = false;
+        generateBtn.textContent = 'Gerar Perguntas';
+        numQuestionsInput.focus();
+        return;
+      }
+
       //const password = localStorage.getItem('api_access_password'); // just for local testing
       const password = document.getElementById('password_input').value;
 
       const narrative_aspects = Array.from(document.querySelectorAll('.aspect-option:checked')).map(cb => cb.value);
 
       const payload = {
-        education_level: document.getElementById('education_level').value,
-        quantity: parseInt(document.getElementById('quantity').value),
-        difficulty: document.getElementById('difficulty').value,
         narrative_text: document.getElementById('narrative_text').value,
+        education_level: document.getElementById('education_level').value,
+        num_questions: parseInt(document.getElementById('num_questions').value),
+        difficulty: document.getElementById('difficulty').value,
         password: password,
         question_type: document.getElementById('question_type').value,
         model_name: document.getElementById('model_name').value,
@@ -216,21 +260,77 @@
       };
 
       try {
-        const response = await fetch('https://api-qg-llm-pt.onrender.com/generate-questions', {
+        // local !!!
+        const response = await fetch('http://127.0.0.1:5000/generate-questions', {
+        // deploy
+        //const response = await fetch('https://api-qg-llm-pt.onrender.com/generate-questions', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify(payload)
         });
 
         const data = await response.json();
-        document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        //document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+        displayQuestions(data);
+        var previewTab = new bootstrap.Tab(document.querySelector('#preview-tab'));
+        previewTab.show();
       } catch (err) {
+        console.error("Erro ao processar resposta:", err);
         document.getElementById('output').textContent = 'Erro ao processar resposta.';
       } finally {
         generateBtn.disabled = false;
         generateBtn.textContent = 'Gerar Perguntas';
       }
     });
+
+    function displayQuestions(response) {
+      const outputEl = document.getElementById("output");
+      const previewEl = document.getElementById("preview-output");
+
+      // Show plain JSON
+      outputEl.textContent = JSON.stringify(response, null, 2);
+
+      const questions = response.questions || [];
+      let html = "";
+
+      if (questions.length === 0) {
+        previewEl.innerHTML = "<em>Nenhuma pergunta foi gerada.</em>";
+        return;
+      }
+
+      questions.forEach((q, idx) => {
+        html += `<div class="mb-3">
+          <strong>Q${idx + 1}:</strong> ${q.pergunta}<br/>`;
+
+        if (q.aspeto) {
+          html += `<em>Aspeto:</em> ${q.aspeto}<br/>`;
+        }
+
+        if (q.dificuldade) {
+          html += `<em>Dificuldade:</em> ${q.dificuldade}<br/>`;
+        }
+
+        // Multiple-Choice
+        if (Array.isArray(q.opcoes)) {
+          html += `<ul>`;
+          q.opcoes.forEach(opt => {
+            const label = opt.opcao;
+            const correct = opt.correta === "Verdade." ? "✅" : "";
+            html += `<li><strong>${label}</strong>: ${opt.texto} ${correct}</li>`;
+          });
+          html += `</ul>`;
+        }
+
+        // Open-ended
+        if (!q.opcoes || q.tipo === "open-ended") {
+          html += `<p><em>Resposta esperada:</em> ${q.resposta || "(não fornecida)"}</p>`;
+        }
+
+        html += `</div>`;
+      });
+
+      previewEl.innerHTML = html;
+    }
   </script>
 </body>
 </html>
