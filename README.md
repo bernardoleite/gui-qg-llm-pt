@@ -9,16 +9,16 @@ The interface is available at:
 
 ![Screenshot of the interface](gui_form.png)
 
-## ⚠️ Disclaimer:
+## ⚠️ Disclaimer
 
 This is only a GUI. It does not perform any question generation by itself - it communicates with a custom backend API of your choice.  
 >  
 > The API endpoint can be changed directly in the source code (inside the HTML file) at this section:
 > ```javascript
->   // local example
+>   // local server example
 >   const response = await fetch('http://127.0.0.1:5000/generate-questions', {
 >   // deploy example
->   // const response = await fetch('https://api-qg-llm-pt.onrender.com/generate-questions', {
+>   // const response = await fetch('YOUR_API_URL', {
 >   method: 'POST',
 >   headers: {'Content-Type': 'application/json'},
 >   body: JSON.stringify(payload)
