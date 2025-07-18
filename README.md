@@ -213,7 +213,6 @@ You will receive a response similar to the following (this output structure is w
 - Add support for more LLM models and multilingual output (including json output attributes).
 - Enhance UI with real-time validation and accessibility improvements.
 - Optional export to PDF or DOCX.
-- Store configuration presets for frequent users.
 
 ## Contact
 
