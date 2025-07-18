@@ -1,6 +1,4 @@
-# gui-qg-llm
-
-**Simple Interface for Portuguese Question Generation using LLMs**
+# Simple Interface for Portuguese Question Generation using LLMs
 
 This project is a frontend graphical user interface (GUI) designed to facilitate generating Portuguese reading comprehension questions. It operates as a lightweight client for a custom backend API that leverages large language models (LLMs) to generate questions based on provided narrative text and selected parameters.
 
