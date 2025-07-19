@@ -33,7 +33,7 @@ This is only a GUI. It does not perform any question generation by itself - it c
 - Specify educational level (grades 1 to 4 of the Portuguese primary cycle).
 - Select difficulty level: random, easy, medium, or hard.
 - Optionally include specific narrative aspects (characters, feelings, space, time, action, causality).
-- Access advanced settings for fine-tuning the LLM generation parameters:
+- Access advanced settings for LLM generation parameters:
   - Model selection (currently GPT-4o).
   - Temperature, Max Tokens, and Top-p for controlling output randomness and length.
 - Password protected API access.
